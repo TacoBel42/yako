@@ -1,0 +1,25 @@
+scenario_version: 1
+# imports:
+#   random_digit: "path/to/file.py"
+scenario:
+  name: "test scenario"
+  run_condition: "message.text == 'test'"
+  nodes:
+    start_node:
+      text: "Это тестовый сценарий, отправьте любое число"
+      next_nodes: 
+        - on_message
+    on_message:
+      next_nodes: 
+        - answer_node
+      action:
+        type: python
+        code: "state['user_answer'] = int(message.text)"
+      next_node_instantly: true
+    answer_node:
+      text: "'Вы прислали число {}'.format(state['user_answer'])"
+      compile_formatting: true
+
+  
+
+    

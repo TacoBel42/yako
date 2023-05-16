@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "yako"
+version = "0.1.0"
+description = ""
+authors = ["Belousov Igor <belousov.work42@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyyaml = "^6.0"
+aiogram = "^2.25.1"
+pydantic = "^1.10.7"
+pydantic-yaml = "^0.11.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
