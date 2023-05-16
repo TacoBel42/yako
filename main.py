@@ -8,7 +8,7 @@ from yako.runner import init_runner
 
 bot = Bot(os.getenv("TELEGRAM_BOT_TOKEN"))
 dp = Dispatcher(bot)
-runner = init_runner(['/home/lex/Projects/yako/simple_scenario.yml'])
+runner = init_runner(['./simple_scenario.yml'])
 ctx_manager = ContextManager()
 
 @dp.message_handler()
