@@ -1,15 +1,22 @@
+import glob
+from aiogram import Bot
 from pydantic import BaseModel
 from aiogram.types import Message
+from yako.exceptions import NoNextNode
 from yako.parser import parse_scenario
 
 from yako.scenario import Context, Scenario
+from yako.context_manager import IContextManager
 
 class ScenarioRunnner(BaseModel):
     scenarios: dict[str, Scenario]
+    context_manager: IContextManager
     
-    async def run(self, ctx: Context, current_message: Message):
+    async def run(self, identity_id: str, current_message: Message):
+        ctx = self.context_manager.get_context(identity_id)
+        
         suitable_scenario = None
-    
+        ctx.current_message = current_message
         if ctx.current_scenario:
             suitable_scenario = self.scenarios[ctx.current_scenario]
         if not ctx.current_scenario:
@@ -19,14 +26,27 @@ class ScenarioRunnner(BaseModel):
                     suitable_scenario = scenario
         if not suitable_scenario:
             return 
-        await suitable_scenario.run(ctx, current_message)
+        
+        if not ctx.modules and suitable_scenario.scenario_modules:
+            ctx.modules = suitable_scenario.scenario_modules # make clean
+        
+        try:
+            await suitable_scenario.run(ctx)
+        except NoNextNode:
+            self.expire_user_data(identity_id)
     
     def add_scenario(self, scenario: Scenario):
         self.scenarios[scenario.name] = scenario
         
-def init_runner(path_to_sceanrios: list[str]):
-    runnner = ScenarioRunnner(scenarios={})
+    def expire_user_data(self, identity_id: str):
+        self.context_manager.drop_context(identity_id)
+        
+def init_runner(path_to_sceanrios: list[str], ctx_manager: IContextManager) -> ScenarioRunnner:
+    runnner = ScenarioRunnner(scenarios={}, context_manager=ctx_manager)
+    ctx_manager
     for p in path_to_sceanrios:
-        scenario = parse_scenario(p)
-        runnner.add_scenario(scenario)
+        files = glob.glob(p)
+        for file in files:
+            scenario = parse_scenario(file)
+            runnner.add_scenario(scenario)
     return runnner

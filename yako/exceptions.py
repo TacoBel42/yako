@@ -3,3 +3,6 @@ class NotExistsNode(Exception):
 
 class NoNextNode(Exception):
     pass
+
+class NoModule(Exception):
+    pass

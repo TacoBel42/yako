@@ -1,0 +1,34 @@
+scenario_version: 1
+modules:
+  random_digit: "example_scenarios/modules/random_modul.py"
+scenario:
+  name: "random digit scenario"
+  run_condition: "message.text == 'отгадай число'"
+  nodes:
+    start_node:
+      text: "Это тестовый сценарий, загадайте число, а я попробую угадать, укажите диапазон в формате '0 100'"
+      next_nodes: 
+        - get_range
+    get_range:
+      next_nodes: 
+        - generate_answer_node
+      action:
+        type: python
+        code: "state['from'], state['to'] = list(map(int, message.text.split()))"
+      next_node_instantly: true
+    generate_answer_node:
+      action:
+        type: module
+        name: random_digit
+      text: "Пытаюсь отгадать... Секунду"
+      next_nodes:
+        - answer_node
+      next_node_instantly: true
+    answer_node:
+      text: "'Думаю вы загадли {}'.format(state['answer'])"
+      compile_formatting: true
+
+
+  
+
+    
