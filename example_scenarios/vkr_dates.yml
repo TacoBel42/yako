@@ -1,0 +1,26 @@
+scenario_version: 1
+scenario:
+  name: "vkr dates"
+  run_condition: "'вкр' in message.text and 'даты' in  message.text"
+  nodes:
+    start_node:
+      text: "Уточните, вас интересуют даты предзащиты или защиты ?"
+      next_nodes: 
+        - choose_vkr_date_type
+    choose_vkr_date_type:
+      next_nodes: 
+        - type: condition
+          name: pre_answer_node
+          condition: "'предзащит' in message.text"
+        - type: condition
+          name: main_answer_node
+          condition: "'защит' in message.text"
+      next_node_instantly: true
+    pre_answer_node:
+      text: "'дата предзащиты 2023-14-06'"
+    main_answer_node:
+      text: "'дата защиты 2023-20-06'"
+
+  
+
+    

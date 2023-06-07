@@ -61,27 +61,41 @@ class NodeAction(Action):
         # todo send ctx.vars, bot, message
         pass
 
-
 class Node(BaseModel):
+    class CondidtionNode(BaseModel):
+        type: Literal['condition']
+        name: str
+        condition: str
+    
     name: str
     text: str | None = None
-    next_nodes: list[str] = []
+    next_nodes: list[str] | list[CondidtionNode] = []
     action: NodeAction | ModuleAction | PyAction | None = None
     compile_formatting: bool | None = None
     next_node_instantly: bool = False
     
     async def run(self, ctx: Context):
+        text = self.text
         if self.text:
             if self.compile_formatting:
-                self.text = eval(self.text, {
+                text = eval(self.text, {
                     "state": ctx._context_vars, "message": ctx.current_message
                     })
-            await bot.send_message(ctx.current_message.chat.id, self.text)
+            await bot.send_message(ctx.current_message.chat.id, text)
         if self.action:
             await self.action.run(ctx)
         if not self.next_nodes:
             raise NoNextNode
-        ctx.current_node = self.next_nodes[0] # TODO поправить
+        if len(self.next_nodes) == 1 and isinstance(self.next_nodes[0], str):
+            ctx.current_node = self.next_nodes[0]
+        else:
+            ctx.current_node = self._get_next_node(ctx)
+    
+    def _get_next_node(self, ctx: Context):
+        for node in self.next_nodes:
+            if eval(node.condition, {"state": ctx._context_vars, "message": ctx.current_message}):
+                return node.name
+        raise NoNextNode
     
 
 class Scenario(BaseModel):

@@ -1,4 +1,5 @@
 import glob
+from logging import getLogger
 from aiogram import Bot
 from pydantic import BaseModel
 from aiogram.types import Message
@@ -8,6 +9,8 @@ from yako.parser import parse_scenario
 from yako.scenario import Context, Scenario
 from yako.context_manager import IContextManager
 
+
+logger = getLogger()
 class ScenarioRunnner(BaseModel):
     scenarios: dict[str, Scenario]
     context_manager: IContextManager
@@ -34,6 +37,10 @@ class ScenarioRunnner(BaseModel):
             await suitable_scenario.run(ctx)
         except NoNextNode:
             self.expire_user_data(identity_id)
+        except Exception as e:
+            logger.error(f'got error during execution: {e}\n scenario: {suitable_scenario.name}')
+            self.expire_user_data(identity_id)
+
     
     def add_scenario(self, scenario: Scenario):
         self.scenarios[scenario.name] = scenario

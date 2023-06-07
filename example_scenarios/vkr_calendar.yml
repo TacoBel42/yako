@@ -1,0 +1,22 @@
+scenario_version: 1
+modules:
+  calendar: "example_scenarios/modules/get_calendar_plan.py"
+scenario:
+  name: "vkr news"
+  run_condition: "message.text == 'календарь вкр'"
+  nodes:
+    start_node:
+      next_nodes: 
+        - answer_node
+      action:
+        type: module
+        name: calendar
+      next_node_instantly: true
+    answer_node:
+      text: "'Календарь: {}'.format(state['calendar'])"
+      compile_formatting: true
+
+
+  
+
+    

@@ -27,8 +27,3 @@ scenario:
     answer_node:
       text: "'Думаю вы загадли {}'.format(state['answer'])"
       compile_formatting: true
-
-
-  
-
-    
