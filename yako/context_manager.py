@@ -23,4 +23,6 @@ class ContextManager(IContextManager):
         return self._ctxs[identity_key]
     
     def drop_context(self, identity_key: str):
+        if identity_key not in self._ctxs:
+            return
         self._ctxs.pop(identity_key)

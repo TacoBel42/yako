@@ -1,3 +1,3 @@
-information_text: "Text info"
+information_text: "Я бот который информирует по учебнгым вопросам МИРЭА"
 operator_link: "t.me/operator"
-context_drop_command: "/exit"
+context_drop_command: "exit"
