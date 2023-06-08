@@ -1,10 +1,11 @@
+import os
 from typing import Any
 import requests
 from aiogram.types import Message
 from lxml import etree
 
 cookies = {
-'PHPSESSID': '',
+'PHPSESSID': os.getenv("VEGA_SESSION"),
 'hotlog': '1',
 'SL_G_WPT_TO': 'ru',
 'SL_GWPT_Show_Hide_tmp': '1',
