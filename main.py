@@ -87,7 +87,7 @@ async def enter_simple_scenario(message: Message, state: FSMContext):
 async def get_operator_link(message: Message):
     text = message.text.split('\n')
     if len(text) != 2:
-        await bot.send_message(message.from_id, 'Не верный формат')
+        await bot.send_message(message.from_id, 'Неверный формат')
         return
     bot_conf.information_text = text[1]
     dump_bot_config(bot_conf)
