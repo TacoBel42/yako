@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  yako_vega:
+    build:
+      context: ./
+    container_name: yako_vega
+    restart: always
+    env_file:
+      - .env
+    command: bash -c "poetry run python3 main.py"
