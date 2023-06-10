@@ -1,6 +1,7 @@
-from importlib.machinery import SourceFileLoader
+from logging import getLogger
 import os
-import importlib
+import re
+from importlib.machinery import SourceFileLoader
 from typing import Any, Literal
 
 from pydantic import BaseModel
@@ -10,7 +11,8 @@ from abc import ABC, abstractmethod
 from yako.exceptions import NoModule, NoNextNode, NotExistsNode
 
 bot = Bot(os.getenv("TELEGRAM_BOT_TOKEN"))
-        
+_logger = getLogger("Scenario")
+    
 class Context:
     def __init__(self) -> None:
         self._context_vars: dict[str, Any] = {}
@@ -69,6 +71,7 @@ class Node(BaseModel):
     
     name: str
     text: str | None = None
+    file_url: str | None = None
     next_nodes: list[str] | list[CondidtionNode] = []
     action: NodeAction | ModuleAction | PyAction | None = None
     compile_formatting: bool | None = None
@@ -81,7 +84,10 @@ class Node(BaseModel):
                 text = eval(self.text, {
                     "state": ctx._context_vars, "message": ctx.current_message
                     })
-            await bot.send_message(ctx.current_message.chat.id, text)
+            if self.file_url:
+                await bot.send_document(ctx.current_message.chat.id, self.file_url, text, caption=text)
+            else:
+                await bot.send_message(ctx.current_message.chat.id, text)
         if self.action:
             await self.action.run(ctx)
         if not self.next_nodes:
@@ -100,6 +106,7 @@ class Node(BaseModel):
 
 class Scenario(BaseModel):
     name: str
+    desc: str | None = None
     run_condition: str
     nodes: dict[str, Node]
     
@@ -119,8 +126,9 @@ class Scenario(BaseModel):
         
     def is_suitable(self, message: Message) -> bool:
         try:
-            result = eval(self.run_condition, {"message": message})
-        except Exception:
+            result = eval(self.run_condition, {"message": message, "re": re})
+        except Exception as e:
+            _logger.error(f": {self.name} got err while suitable checking: {e}")
             return False
         if isinstance(result, bool):
             return result

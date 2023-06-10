@@ -1,7 +1,7 @@
 scenario_version: 1
 scenario:
   name: "vkr dates"
-  run_condition: "'вкр' in message.text and 'даты' in  message.text"
+  run_condition: "'пример' in message.text and 'вкр' in message.text and 'даты' in  message.text"
   nodes:
     start_node:
       text: "Уточните, вас интересуют даты предзащиты или защиты ?"

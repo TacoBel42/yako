@@ -1,0 +1,28 @@
+scenario_version: 1
+scenario:
+  name: "vkr dates"
+  run_condition: "'вкр' in message.text and 'метод' in  message.text"
+  nodes:
+    start_node:
+      text: "Уточните, вас интересуют методичка для бакалавров или магистров ?"
+      next_nodes: 
+        - choose_vkr_help
+    choose_vkr_help:
+      next_nodes: 
+        - type: condition
+          name: bac_answer_node
+          condition: "'бакалав' in message.text"
+        - type: condition
+          name: mag_answer_node
+          condition: "'магистр' in message.text"
+      next_node_instantly: true
+    bac_answer_node:
+      text: "Методчика для бакалавров"
+      file_url: "https://vega.fcyb.mirea.ru/disc/manuals/135620220926-024627f.zip"
+    mag_answer_node:
+      text: "методчика для магистров"
+      file_url: "https://vega.fcyb.mirea.ru/disc/manuals/135720220926-024830f.zip"
+
+  
+
+    

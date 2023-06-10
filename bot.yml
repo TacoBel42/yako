@@ -1,3 +1,5 @@
-information_text: "Я бот который информирует по учебнгым вопросам МИРЭА"
+information_text: "Я бот который информирует по учебным вопросам МИРЭА"
 operator_link: "t.me/operator"
 context_drop_command: "exit"
+admin_user_ids: [1081450703]
+scenario_dirs: ['./example_scenarios/*.yml']

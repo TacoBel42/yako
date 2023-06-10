@@ -24,6 +24,7 @@ def parse_scenario(path: str):
             name=s['name'], 
             run_condition=s['run_condition'],
             nodes=s['nodes'], 
+            desc=s.get('desc'),
             scenario_modules=modules
         )
         return scenario

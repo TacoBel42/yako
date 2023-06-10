@@ -27,6 +27,7 @@ class ScenarioRunnner(BaseModel):
                 if scenario.is_suitable(current_message):
                     ctx.current_scenario = scenario_name
                     suitable_scenario = scenario
+                    break
         if not suitable_scenario:
             return 
         

@@ -1,0 +1,9 @@
+scenario_version: 1
+scenario:
+  name: "{{ name }}"
+  desc: " {{ desc }} "
+  run_condition: "{{ condition }}" # use only '' str notation
+  nodes:
+    start_node:
+      text: "{{ answer }}"
+    
