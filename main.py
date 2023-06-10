@@ -63,7 +63,7 @@ async def create_simple_scenario(message: Message):
     state = dp.current_state(user=message.from_user.id)
     await bot.send_message(message.chat.id, 
                             "Отправьте название, вопрос и ответ в формате: \n" \
-                            "Внутреннее название: vkr_dates_example"
+                            "Внутреннее название: vkr_dates_example\n"
                             "Описание(опционально - отступ): Этот сценарий расскажет о датах вкр\n" \
                             "Вопрос: Дат* вкр (без знака вопроса)\n"\
                             "Ответ: Дата вкр не известна")
