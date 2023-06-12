@@ -41,6 +41,7 @@ class ScenarioRunnner(BaseModel):
         except Exception as e:
             logger.error(f'got error during execution: {e}\n scenario: {suitable_scenario.name}')
             self.expire_user_data(identity_id)
+            raise e
 
     
     def add_scenario(self, scenario: Scenario):

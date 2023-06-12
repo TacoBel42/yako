@@ -1,6 +1,6 @@
 scenario_version: 1
 modules:
-  calendar: "example_scenarios/modules/get_calendar_plan.py"
+  vkr: "example_scenarios/modules/get_vkr_info.py"
 scenario:
   name: "vkr news"
   run_condition: "message.text == 'календарь вкр'"
@@ -10,7 +10,7 @@ scenario:
         - answer_node
       action:
         type: module
-        name: calendar
+        name: vkr
       next_node_instantly: true
     answer_node:
       text: "'Календарь: {}'.format(state['calendar'])"
