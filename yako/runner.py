@@ -11,6 +11,9 @@ from yako.context_manager import IContextManager
 
 
 logger = getLogger()
+class NoScenario(Exception):
+    pass
+
 class ScenarioRunnner(BaseModel):
     scenarios: dict[str, Scenario]
     context_manager: IContextManager
@@ -29,7 +32,7 @@ class ScenarioRunnner(BaseModel):
                     suitable_scenario = scenario
                     break
         if not suitable_scenario:
-            return 
+            raise NoScenario 
         
         if not ctx.modules and suitable_scenario.scenario_modules:
             ctx.modules = suitable_scenario.scenario_modules # make clean

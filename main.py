@@ -11,7 +11,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from builder import build_new_scenario
 
 from yako.context_manager import ContextManager
-from yako.runner import init_runner
+from yako.runner import NoScenario, init_runner
 
 class BotConfig(BaseModel):
     information_text: str
@@ -103,7 +103,10 @@ async def get_operator_link(message: Message):
 
 @dp.message_handler(ChatTypeFilter(ChatType.PRIVATE))
 async def run_scenario(message: Message):
-    await runner.run(str(message.from_id), message)
+    try:
+        await runner.run(str(message.from_id), message)
+    except NoScenario:
+        await bot.send_message(message.from_id, 'Не смогли распознать сценарий')
 
  
 if __name__ == '__main__':
