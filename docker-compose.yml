@@ -3,6 +3,8 @@ services:
   yako_vega:
     build:
       context: ./
+    volumes:
+      - ./data:/example_scenarios
     container_name: yako_vega
     restart: unless-stopped
     env_file:
