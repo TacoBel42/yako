@@ -1,0 +1,6 @@
+version: '2'
+# Extra overrides for vega deployment
+services:
+  yako_vega:
+    extra_hosts:
+      - "vega.fcyb.mirea.ru:192.168.71.199"
