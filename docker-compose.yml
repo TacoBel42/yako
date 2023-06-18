@@ -5,8 +5,11 @@ services:
       context: ./
     volumes:
       - ./data:/example_scenarios
+      - ./app_logs:/logs/
     container_name: yako_vega
     restart: unless-stopped
+    ports:
+      - 8445:8445
     env_file:
       - .env
     command: bash -c "poetry run python3 main.py"

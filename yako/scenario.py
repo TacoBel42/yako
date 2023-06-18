@@ -3,6 +3,7 @@ import os
 import re
 from importlib.machinery import SourceFileLoader
 from typing import Any, Literal
+from prometheus_client import Counter
 
 from pydantic import BaseModel
 from aiogram.types import Message

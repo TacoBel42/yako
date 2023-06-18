@@ -1,4 +1,5 @@
 import os
+from prometheus_client import start_http_server
 
 import yaml
 from pydantic import BaseModel
@@ -108,6 +109,6 @@ async def run_scenario(message: Message):
     except NoScenario:
         await bot.send_message(message.from_id, 'Не смогли распознать сценарий')
 
- 
 if __name__ == '__main__':
+    start_http_server(port=8445)
     executor.start_polling(dp, skip_updates=True)

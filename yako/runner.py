@@ -1,16 +1,26 @@
 import glob
-from logging import getLogger
+import logging 
 from aiogram import Bot
 from pydantic import BaseModel
 from aiogram.types import Message
+from prometheus_client import Counter
+
 from yako.exceptions import NoNextNode
 from yako.parser import parse_scenario
-
 from yako.scenario import Context, Scenario
 from yako.context_manager import IContextManager
 
+scenarios_recognizion_counter = Counter('scenarios_recognizion', 'Распознанование сценариев', ['status'])
+scenarios_call_counter = Counter('scenarios_call', 'Выполнение сценариев', ['name'])
 
-logger = getLogger()
+logging.basicConfig(filename='./logs/out.log',
+                    filemode='a',
+                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                    datefmt='%H:%M:%S',
+                    level=logging.DEBUG)
+
+logger = logging.getLogger()
+
 class NoScenario(Exception):
     pass
 
@@ -32,12 +42,15 @@ class ScenarioRunnner(BaseModel):
                     suitable_scenario = scenario
                     break
         if not suitable_scenario:
+            logger.info(f'cant find suitable scenario. request: {current_message.text}')
+            scenarios_recognizion_counter.labels(status='false').inc()
             raise NoScenario 
-        
+        scenarios_recognizion_counter.labels(status='true').inc()
         if not ctx.modules and suitable_scenario.scenario_modules:
             ctx.modules = suitable_scenario.scenario_modules # make clean
         
         try:
+            scenarios_call_counter.labels(name=suitable_scenario.name).inc()
             await suitable_scenario.run(ctx)
         except NoNextNode:
             self.expire_user_data(identity_id)
