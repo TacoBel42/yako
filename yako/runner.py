@@ -14,10 +14,10 @@ scenarios_recognizion_counter = Counter('scenarios_recognizion', 'Распозн
 scenarios_call_counter = Counter('scenarios_call', 'Выполнение сценариев', ['name'])
 
 logging.basicConfig(
-    # filename='./logs/out.log',
-    #                 filemode='a',
-    #                 format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-    #                 datefmt='%H:%M:%S',
+    filename='./logs/out.log',
+                    filemode='a',
+                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                    datefmt='%H:%M:%S',
                     level=logging.DEBUG)
 
 logger = logging.getLogger()
