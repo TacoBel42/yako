@@ -8,6 +8,7 @@ def build_condition_re(question: str):
 def build_new_scenario(name: str, desc: str, question: str, answer: str) -> str:
     environment = Environment(loader=FileSystemLoader('templates/'))
     template = environment.get_template('simple.template.yml')
+    answer = answer.replace('"', '\\"')
     scenario = template.render(name=name, desc=desc, condition=build_condition_re(question), answer=answer)
     with open("example_scenarios/" + name + "_auto" + ".yml", "w") as f:
         f.write(scenario)

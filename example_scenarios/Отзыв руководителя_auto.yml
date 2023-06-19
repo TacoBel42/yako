@@ -1,0 +1,9 @@
+scenario_version: 1
+scenario:
+  name: "Отзыв руководителя"
+  desc: " Расскажет, как составляется отзыв руководителя "
+  run_condition: "bool(re.compile('отзыв руководителя').match(message.text.lower()))" # use only '' str notation
+  nodes:
+    start_node:
+      text: "Должен рекомендовать оценку и обосновывать ее, пишется руководителем ВКР"
+    

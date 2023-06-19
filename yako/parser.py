@@ -11,8 +11,10 @@ def parse_modules(m):
         modules[name] = RunnableModule(name, path)
     return modules
 
-def parse_scenario(path: str):
+def parse_scenario(path: str) -> Scenario | None:
     with open(path, 'r') as f:
+        if f.name.split('/')[-1][0] == '_':
+            return
         f = yaml.safe_load(f)
         s = f['scenario']
         name_nodes(s['nodes'])

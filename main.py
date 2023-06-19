@@ -34,8 +34,9 @@ bot = Bot(os.getenv("TELEGRAM_BOT_TOKEN"))
 dp = Dispatcher(bot, storage=MemoryStorage())
 bot_conf = load_bot_config()
 runner = init_runner(bot_conf.scenario_dirs, ContextManager(_ctxs={}))
-admin_filters = [IDFilter(admin_id) for admin_id in bot_conf.admin_user_ids]
-
+# admin_filters = [IDFilter(admin_id) for admin_id in bot_conf.admin_user_ids]
+def is_admin(message: Message):
+    return message.from_id in bot_conf.admin_user_ids
 
 class CreateSimpleScenario(StatesGroup):
     waiting_for_scenario= State()
@@ -53,18 +54,18 @@ async def get_operator_link(message: Message):
 async def get_operator_link(message: Message):
     await bot.send_message(message.chat.id, bot_conf.information_text)
     
-@dp.message_handler(ChatTypeFilter(ChatType.PRIVATE), *admin_filters, commands=['rebuild'])
+@dp.message_handler(ChatTypeFilter(ChatType.PRIVATE), is_admin, commands=['rebuild'])
 async def get_operator_link(message: Message):
     global runner
     runner = init_runner(bot_conf.scenario_dirs, runner.context_manager)
     await bot.send_message(message.chat.id, f"Успешно перезапустили {len(runner.scenarios)} сценариев")
 
-@dp.message_handler(ChatTypeFilter(ChatType.PRIVATE), *admin_filters, commands=['build'], state="*")
+@dp.message_handler(ChatTypeFilter(ChatType.PRIVATE), is_admin, commands=['build'], state="*")
 async def create_simple_scenario(message: Message):
     state = dp.current_state(user=message.from_user.id)
     await bot.send_message(message.chat.id, 
                             "Отправьте название, вопрос и ответ в формате: \n" \
-                            "Внутреннее название: vkr_dates_example\n"
+                            "Пример вызова(name): Даты ВКР\n"
                             "Описание(опционально - отступ): Этот сценарий расскажет о датах вкр\n" \
                             "Вопрос: Дат* вкр (без знака вопроса)\n"\
                             "Ответ: Дата вкр не известна")
@@ -73,18 +74,17 @@ async def create_simple_scenario(message: Message):
 @dp.message_handler(ChatTypeFilter(ChatType.PRIVATE), state=CreateSimpleScenario.waiting_for_scenario.state)   
 async def enter_simple_scenario(message: Message, state: FSMContext):
     text = message.text.split('\n')
-    if len(text) != 4:
+    if len(text) < 4:
         await bot.send_message(message.from_id, "Не удалось распарсить вопрос-ответ")
         await state.finish()
         return
-    scenario_path = build_new_scenario(name=text[0], desc=text[1], question=text[2], answer=text[3])
+    scenario_path = build_new_scenario(name=text[0], desc=text[1], question=text[2], answer='\\n'.join(text[3:]))
     global runner
-    # TODO: update config
     runner = init_runner(bot_conf.scenario_dirs, runner.context_manager)
     await state.finish()
     await bot.send_message(message.from_id, "Успешно создали сценарий.")
 
-@dp.message_handler(ChatTypeFilter(ChatType.PRIVATE), *admin_filters, commands=['edit_help'])
+@dp.message_handler(ChatTypeFilter(ChatType.PRIVATE), is_admin, commands=['edit_help'])
 async def get_operator_link(message: Message):
     text = message.text.split('\n')
     if len(text) != 2:
@@ -96,14 +96,15 @@ async def get_operator_link(message: Message):
 
 @dp.message_handler(ChatTypeFilter(ChatType.PRIVATE), commands=['scenarios'])
 async def get_operator_link(message: Message):
-    response = 'Вот такие сценарии доступны\n'
+    response = f'Доступен {len(runner.scenarios)} сценарий:\n\n'
     for _, scenario  in runner.scenarios.items():
-        response += scenario.name + ' - ' + (scenario.desc or "") + '\n'
-    await bot.send_message(message.from_id, response)
+        response += '• "<b>' + scenario.name + '</b>"' + ' - ' + (scenario.desc or "") + '\n'
+    await bot.send_message(message.from_id, response, parse_mode='HTML')
         
 
 @dp.message_handler(ChatTypeFilter(ChatType.PRIVATE))
 async def run_scenario(message: Message):
+    message.text = message.text.strip()
     try:
         await runner.run(str(message.from_id), message)
     except NoScenario:

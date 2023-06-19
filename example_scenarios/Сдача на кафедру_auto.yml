@@ -1,0 +1,9 @@
+scenario_version: 1
+scenario:
+  name: "Сдача на кафедру"
+  desc: " Информация о том, когда и как нужно сдать документы на кафедру "
+  run_condition: "bool(re.compile('сдача на кафедру').match(message.text.lower()))" # use only '' str notation
+  nodes:
+    start_node:
+      text: "ВКР сдается после прохождения всех этапов, подшитая и с всеми росписями"
+    

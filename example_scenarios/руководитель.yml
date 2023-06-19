@@ -1,0 +1,24 @@
+scenario_version: 1
+modules:
+  vkr: "example_scenarios/modules/get_vkr_info.py"
+scenario:
+  name: "Руководитель"
+  desc: "Расскажет о теме, руководителе и консультанте по ВКР"
+  run_condition: "message.text.lower().replace('?', '') == 'руководитель вкр'"
+  nodes:
+    start_node:
+      text: "Отправьте ваше ФИО в формате: Филяев Сергей"
+      next_nodes: 
+        - get_fio
+      action:
+        type: module
+        name: vkr
+    get_fio:
+      text: "'Вот информация по вашей ВКР: \\n {}'.format(' '.join((state['bac_leaders'].get(message.text) or state['mag_leaders'].get(message.text) or [])) or 'Не найдено')"
+      compile_formatting: true
+      next_nodes: 
+        - contacts
+      next_node_instantly: true
+    contacts:
+      text: "'Контакты: \\n {}'.format('\\n'.join(state['cont_leaders']))"
+      compile_formatting: true

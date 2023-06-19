@@ -1,0 +1,9 @@
+scenario_version: 1
+scenario:
+  name: "Рецензия"
+  desc: " Расскажет, как получить рецензию и какие к ней предъявляются требования "
+  run_condition: "bool(re.compile('рецензия').match(message.text.lower()))" # use only '' str notation
+  nodes:
+    start_node:
+      text: "Примеры рецензий 2021 года опубликованы на странице ВКР"
+    

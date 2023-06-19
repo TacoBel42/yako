@@ -1,7 +1,7 @@
 scenario_version: 1
 scenario:
-  name: "vkr dates"
-  run_condition: "'вкр' in message.text and 'метод' in  message.text"
+  name: "Оформление"
+  run_condition: "message.text.lower() == 'оформление'"
   nodes:
     start_node:
       text: "Уточните, вас интересуют методичка для бакалавров или магистров ?"

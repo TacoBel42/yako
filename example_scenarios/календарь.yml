@@ -2,8 +2,9 @@ scenario_version: 1
 modules:
   vkr: "example_scenarios/modules/get_vkr_info.py"
 scenario:
-  name: "vkr news"
-  run_condition: "message.text == 'календарь вкр'"
+  name: "Календарь"
+  desc: Вернет календарь с сайта ВЕГА
+  run_condition: "message.text.lower() == 'календарь'"
   nodes:
     start_node:
       next_nodes: 

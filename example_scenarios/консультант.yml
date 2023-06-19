@@ -2,9 +2,9 @@ scenario_version: 1
 modules:
   vkr: "example_scenarios/modules/get_vkr_info.py"
 scenario:
-  name: "Кто мой руководитель ВКР"
-  desc: "Руководитель вкр"
-  run_condition: "message.text.lower().replace('?', '') == 'руководитель вкр'"
+  name: "Консультант"
+  desc: "Расскажет о теме, руководителе и консультанте по ВКР"
+  run_condition: "message.text.lower().replace('?', '') == 'консультант вкр'"
   nodes:
     start_node:
       text: "Отправьте ваше ФИО в формате: Филяев Сергей"

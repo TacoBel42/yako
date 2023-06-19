@@ -13,10 +13,11 @@ from yako.context_manager import IContextManager
 scenarios_recognizion_counter = Counter('scenarios_recognizion', 'Распознанование сценариев', ['status'])
 scenarios_call_counter = Counter('scenarios_call', 'Выполнение сценариев', ['name'])
 
-logging.basicConfig(filename='./logs/out.log',
-                    filemode='a',
-                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                    datefmt='%H:%M:%S',
+logging.basicConfig(
+    # filename='./logs/out.log',
+    #                 filemode='a',
+    #                 format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+    #                 datefmt='%H:%M:%S',
                     level=logging.DEBUG)
 
 logger = logging.getLogger()
@@ -73,5 +74,6 @@ def init_runner(path_to_sceanrios: list[str], ctx_manager: IContextManager) -> S
         files = glob.glob(p)
         for file in files:
             scenario = parse_scenario(file)
-            runnner.add_scenario(scenario)
+            if scenario:
+                runnner.add_scenario(scenario)
     return runnner

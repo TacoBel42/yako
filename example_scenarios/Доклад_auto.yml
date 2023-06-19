@@ -1,0 +1,9 @@
+scenario_version: 1
+scenario:
+  name: "Доклад"
+  desc: " Требования к выступлению на защите "
+  run_condition: "bool(re.compile('доклад').match(message.text.lower()))" # use only '' str notation
+  nodes:
+    start_node:
+      text: "На 10-12 минут. Требуется четкая и внятная речь. Рекомендуем предварительно репетировать"
+    

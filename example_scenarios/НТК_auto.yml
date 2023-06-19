@@ -1,0 +1,9 @@
+scenario_version: 1
+scenario:
+  name: "НТК"
+  desc: " Расскажет, как готовить и сдавать доклад на конференцию РТУ МИРЭА "
+  run_condition: "bool(re.compile('нтк').match(message.text.lower()))" # use only '' str notation
+  nodes:
+    start_node:
+      text: "Ждите подробностей"
+    

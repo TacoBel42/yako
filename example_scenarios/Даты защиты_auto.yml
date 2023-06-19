@@ -1,0 +1,9 @@
+scenario_version: 1
+scenario:
+  name: "Даты защиты"
+  desc: " Расскажет о расписании защит "
+  run_condition: "bool(re.compile('даты защиты').match(message.text.lower()))" # use only '' str notation
+  nodes:
+    start_node:
+      text: "Будут известны позже"
+    
