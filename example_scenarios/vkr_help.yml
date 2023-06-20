@@ -1,7 +1,7 @@
 scenario_version: 1
 scenario:
   name: "Оформление"
-  run_condition: "message.text.lower() == 'оформление'"
+  run_condition: "message.text.lower().replace('ё', 'е') == 'оформление'"
   nodes:
     start_node:
       text: "Уточните, вас интересуют методичка для бакалавров или магистров ?"

@@ -2,7 +2,7 @@ scenario_version: 1
 scenario:
   name: "Реферат"
   desc: " информация о составлении реферата "
-  run_condition: "bool(re.compile('реферат').match(message.text.lower()))" # use only '' str notation
+  run_condition: "bool(re.compile('реферат').match(message.text.lower().replace('ё', 'е')))" # use only '' str notation
   nodes:
     start_node:
       text: "Сообщаем, что в соответствии с положением о ВКР реферат делать не нужно. А нужно делать аннотацию"

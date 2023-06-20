@@ -3,7 +3,7 @@ from jinja2 import Environment, FileSystemLoader
 def build_condition_re(question: str):
     question = question.lower()
     reg = question.replace('*', '[а-яА-я]*').replace('?', '[а-яА-я]?')
-    return f"bool(re.compile('{reg}').match(message.text.lower()))"
+    return f"bool(re.compile('{reg}').match(message.text.lower().replace('ё', 'е')))"
 
 def build_new_scenario(name: str, desc: str, question: str, answer: str) -> str:
     environment = Environment(loader=FileSystemLoader('templates/'))

@@ -4,7 +4,7 @@ modules:
 scenario:
   name: "Календарь"
   desc: Вернет календарь с сайта ВЕГА
-  run_condition: "message.text.lower() == 'календарь'"
+  run_condition: "message.text.lower().replace('ё', 'е') == 'календарь'"
   nodes:
     start_node:
       next_nodes: 

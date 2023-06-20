@@ -2,7 +2,7 @@ scenario_version: 1
 scenario:
   name: "Требования успешной предзащиты бакалавры"
   desc: " Вернет требования для предзащиты для бакалавров "
-  run_condition: "bool(re.compile('требования успешной предзащиты бакалавры').match(message.text.lower()))" # use only '' str notation
+  run_condition: "bool(re.compile('требования успешной предзащиты бакалавры').match(message.text.lower().replace('ё', 'е')))" # use only '' str notation
   nodes:
     start_node:
       text: "1) Распечатанная пояснительная записка, оформленная по методичке и скорректированная по замечаниям Ю. М. Крыжановского, \n

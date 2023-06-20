@@ -4,7 +4,7 @@ modules:
 scenario:
   name: "Консультант"
   desc: "Расскажет о теме, руководителе и консультанте по ВКР"
-  run_condition: "message.text.lower() == 'консультант'"
+  run_condition: "message.text.lower().replace('ё', 'е') == 'консультант'"
   nodes:
     start_node:
       text: "Отправьте ваше ФИО в формате: Филяев Сергей"

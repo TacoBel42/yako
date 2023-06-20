@@ -2,7 +2,7 @@ scenario_version: 1
 scenario:
   name: "Сроки"
   desc: " Расскажет о сроках работы и сдачи материалов по ВКР "
-  run_condition: "bool(re.compile('сроки').match(message.text.lower()))" # use only '' str notation
+  run_condition: "bool(re.compile('сроки').match(message.text.lower().replace('ё', 'е')))" # use only '' str notation
   nodes:
     start_node:
       text: "В соотв. с календарем должны быть соблюдены"

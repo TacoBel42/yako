@@ -2,7 +2,7 @@ scenario_version: 1
 scenario:
   name: "Пояснительная записка"
   desc: " Расскажет о требованиях по оформлению пояснительной записки "
-  run_condition: "bool(re.compile('пояснительная записка').match(message.text.lower()))" # use only '' str notation
+  run_condition: "bool(re.compile('пояснительная записка').match(message.text.lower().replace('ё', 'е')))" # use only '' str notation
   nodes:
     start_node:
       text: "Объем пояснительной записки к ВКР бакалавра (без учета приложений): не менее 30 страниц\nОбъем пояснительной записки к ВКР магистра (без учета приложений): не менее 40 страниц\nСписок литературы: не менее 10 источников, из которых не менее 2-х должны быть моложе 5 лет"

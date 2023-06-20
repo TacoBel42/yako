@@ -86,6 +86,7 @@ async def enter_simple_scenario(message: Message, state: FSMContext):
 
 @dp.message_handler(ChatTypeFilter(ChatType.PRIVATE), is_admin, commands=['edit_help'])
 async def get_operator_link(message: Message):
+    text = message.text.replace('ё', 'е')
     text = message.text.split('\n')
     if len(text) != 2:
         await bot.send_message(message.from_id, 'Неверный формат')
@@ -104,6 +105,7 @@ async def get_operator_link(message: Message):
 
 @dp.message_handler(ChatTypeFilter(ChatType.PRIVATE))
 async def run_scenario(message: Message):
+    message.text = message.text.replace('ё', 'е')
     message.text = message.text.strip()
     try:
         await runner.run(str(message.from_id), message)
