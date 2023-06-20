@@ -4,7 +4,7 @@ modules:
 scenario:
   name: "Руководитель"
   desc: "Расскажет о теме, руководителе и консультанте по ВКР"
-  run_condition: "message.text.lower().replace('?', '') == 'руководитель вкр'"
+  run_condition: "message.text.lower().replace('?', '') == 'руководитель'"
   nodes:
     start_node:
       text: "Отправьте ваше ФИО в формате: Филяев Сергей"
